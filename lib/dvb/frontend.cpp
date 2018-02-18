@@ -223,8 +223,6 @@ void eDVBFrontendParametersTerrestrial::set(const TerrestrialDeliverySystemDescr
 		case 1: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_7MHz; break;
 		case 2: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_6MHz; break;
 		case 3: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_5MHz; break;
-		case 4: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_10MHz; break;
-		case 5: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_1_712MHz; break;
 		default: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_Auto; break;
 	}
 	switch (descriptor.getCodeRateHpStream())
@@ -250,9 +248,6 @@ void eDVBFrontendParametersTerrestrial::set(const TerrestrialDeliverySystemDescr
 		case 0: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_2k; break;
 		case 1: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_8k; break;
 		case 2: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_4k; break;
-		case 3: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_1k; break;
-		case 4: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_16k; break;
-		case 5: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_32k; break;
 		default: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_Auto; break;
 	}
 	switch (descriptor.getGuardInterval())
@@ -261,9 +256,6 @@ void eDVBFrontendParametersTerrestrial::set(const TerrestrialDeliverySystemDescr
 		case 1: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_16; break;
 		case 2: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_8; break;
 		case 3: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_4; break;
-		case 4: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_128; break;
-		case 5: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_19_128; break;
-		case 6: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_19_256; break;
 		default: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_Auto; break;
 	}
 //	hierarchy = descriptor.getHierarchyInformation();
@@ -279,6 +271,50 @@ void eDVBFrontendParametersTerrestrial::set(const TerrestrialDeliverySystemDescr
 	eDebug("Terr freq %d, bw %d, cr_hp %d, cr_lp %d, tm_mode %d, guard %d, hierarchy %d, const %d",
 		frequency, bandwidth, code_rate_HP, code_rate_LP, transmission_mode,
 		guard_interval, hierarchy, modulation);
+}
+
+void eDVBFrontendParametersTerrestrial::set(const T2DeliverySystemDescriptor &descriptor)
+{
+       switch (descriptor.getBandwidth())
+       {
+               case 0: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_8MHz; break;
+               case 1: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_7MHz; break;
+               case 2: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_6MHz; break;
+               case 3: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_5MHz; break;
+               case 4: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_10MHz; break;
+               case 5: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_1_712MHz; break;
+               default: bandwidth = eDVBFrontendParametersTerrestrial::Bandwidth_Auto; break;
+       }
+       switch (descriptor.getTransmissionMode())
+       {
+               case 0: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_2k; break;
+               case 1: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_8k; break;
+               case 2: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_4k; break;
+               case 3: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_1k; break;
+               case 4: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_16k; break;
+               case 5: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_32k; break;
+               default: transmission_mode = eDVBFrontendParametersTerrestrial::TransmissionMode_Auto; break;
+       }
+       switch (descriptor.getGuardInterval())
+       {
+               case 0: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_32; break;
+               case 1: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_16; break;
+               case 2: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_8; break;
+               case 3: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_4; break;
+               case 4: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_1_128; break;
+               case 5: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_19_128; break;
+               case 6: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_19_256; break;
+               default: guard_interval = eDVBFrontendParametersTerrestrial::GuardInterval_Auto; break;
+       }
+       plpid = descriptor.getPlpId();
+       code_rate_HP = eDVBFrontendParametersTerrestrial::FEC_Auto;
+       code_rate_LP = eDVBFrontendParametersTerrestrial::FEC_Auto;
+       hierarchy = eDVBFrontendParametersTerrestrial::Hierarchy_Auto;
+       modulation = eDVBFrontendParametersTerrestrial::Modulation_Auto;
+       inversion = eDVBFrontendParametersTerrestrial::Inversion_Unknown;
+       system = eDVBFrontendParametersTerrestrial::System_DVB_T2;
+       eDebug("T2 bw %d, tm_mode %d, guard %d, plpid %d",
+               bandwidth, transmission_mode, guard_interval, plpid);
 }
 
 eDVBFrontendParameters::eDVBFrontendParameters()
